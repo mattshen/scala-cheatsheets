@@ -203,3 +203,54 @@ def sum(args: List[Int]) = args.reduceLeft(_+_)
 sum(List(1,2,3,4,5)
 
 ```
+
+## implicit 
+### parameter
+The actual arguments that are eligible to be passed to an implicit parameter fall into two categories:
+
+First, eligible are all identifiers x that can be accessed at the point of the method call without a prefix and that denote an implicit definition or an implicit parameter.
+Second, eligible are also all members of companion modules of the implicit parameter’s type that are labeled implicit.
+
+```scala
+// simple example
+// probably in a library
+class Prefixer(val prefix: String)
+def addPrefix(s: String)(implicit p: Prefixer) = p.prefix + s
+
+//then probably in your application
+implicit val myImplicitPrefixer = new Prefixer("***")
+addPrefix("abc")  // returns "***abc"
+
+```
+
+```scala
+//more complex one
+abstract class SemiGroup[A] {
+  def add(x: A, y: A): A
+}
+abstract class Monoid[A] extends SemiGroup[A] {
+  def unit: A
+}
+object ImplicitTest extends App {
+  implicit object StringMonoid extends Monoid[String] {
+    def add(x: String, y: String): String = x concat y
+    def unit: String = ""
+  }
+  implicit object IntMonoid extends Monoid[Int] {
+    def add(x: Int, y: Int): Int = x + y
+    def unit: Int = 0
+  }
+  def sum[A](xs: List[A])(implicit m: Monoid[A]): A =
+    if (xs.isEmpty) m.unit
+    else m.add(xs.head, sum(xs.tail))
+
+  println(sum(List(1, 2, 3)))       // uses IntMonoid implicitly
+  println(sum(List("a", "b", "c"))) // uses StringMonoid implicitly
+}
+```
+
+### conversion
+```scala
+implicit def doubleToInt(d: Double) = d.toInt
+val x: Int = 42.0
+```
