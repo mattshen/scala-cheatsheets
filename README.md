@@ -212,6 +212,9 @@ sum(List(1,2,3,4,5)
 ```
 
 ## implicit 
+
+[Implicit for typeclasses](https://www.cakesolutions.net/teamblogs/demystifying-implicits-and-typeclasses-in-scala)
+
 ### parameter
 The actual arguments that are eligible to be passed to an implicit parameter fall into two categories:
 
