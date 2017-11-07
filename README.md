@@ -257,7 +257,115 @@ object ImplicitTest extends App {
 ```
 
 ### conversion
+
 ```scala
 implicit def doubleToInt(d: Double) = d.toInt
 val x: Int = 42.0
+```
+
+
+## collections
+
+```scala
+// head, tail, isEmpty
+object Demo {
+   def main(args: Array[String]) {
+      val fruit = "apples" :: ("oranges" :: ("pears" :: Nil))
+      val nums = Nil
+
+      println( "Head of fruit : " + fruit.head )
+      println( "Tail of fruit : " + fruit.tail )
+      println( "Check if fruit is empty : " + fruit.isEmpty )
+      println( "Check if nums is empty : " + nums.isEmpty )
+   }
+}
+
+//:::
+val fruit1 = "apples" :: ("oranges" :: ("pears" :: Nil))
+val fruit2 = "mangoes" :: ("banana" :: Nil)
+
+// use two or more lists with ::: operator
+var fruit = fruit1 ::: fruit2 //List(apples, oranges, pears, mangoes, banana)
+
+// fill 
+val fruit = List.fill(3)("apples") // Repeats apples three times.
+
+// reverse
+
+val fruit = "apples" :: ("oranges" :: ("pears" :: Nil))
+fruit.reverse
+
+// pattern matching
+
+def listToString(list: List[String]): String = list match {
+    case s :: rest => s + " " + listToString(rest)
+    case Nil => ""
+}
+
+```
+
+
+
+## Option, Some and None
+
+```scala
+//example 1
+def toInt(in: String): Option[Int] = {
+    try {
+        Some(Integer.parseInt(in.trim))
+    } catch {
+        case e: NumberFormatException => None
+    }
+}
+val bag = List("1", "2", "foo", "3", "bar")
+val sum = bag.flatMap(toInt).sum
+```
+
+## Error handling with Option or Either
+
+### with just Option[T]
+```scala
+
+case class Person(name: String, age: Int)
+
+def validateName(name: String): Option[String] = {
+    if (name.isEmpty) None
+    else Some(name)
+}
+
+def validateAge(age: Int): Option[Int] = {
+    Some(age)
+}
+
+val p = for {
+    name <- validateName("Matt")
+    age <- validateAge(30)
+} yield Person(name, age)
+
+println(p) //print Option[Person(Matt, 30)]
+```
+
+### with Either[L, R]
+```scala
+case class Person(name: String, age: Int)
+
+object Hello extends Greeting with App {
+
+  def validateName(name: String): Either[String, String] = {
+    if (name.isEmpty) Left("Name cannot be empty")
+    else Right(name)
+  }
+
+  def validateAge(age: Int): Either[String, Int] = {
+    Right(age)
+  }
+
+  val p = for {
+    name <- validateName("")
+    age <- validateAge(30)
+  } yield Person(name, age)
+
+  println(p)
+
+}
 ```
