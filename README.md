@@ -1,6 +1,10 @@
 # Scala CheatSheet
 
-[The official Cheatsheet](http://docs.scala-lang.org/cheatsheets/index.html)
+## Useful Links
+- [The official Cheatsheet](http://docs.scala-lang.org/cheatsheets/index.html)
+- [Tour of scala](https://docs.scala-lang.org/tour/tour-of-scala.html)
+- [Scala Cookbook](http://scalacookbook.com/)
+- [Scala Cookbook 2] (https://alvinalexander.com/scala/scala-programming-cookbook-recipes-faqs)
 
 ## import
 
@@ -201,6 +205,9 @@ val f = (x: Int) => x*x
 
 def sum(args: List[Int]) = args.reduceLeft(_+_)
 sum(List(1,2,3,4,5)
+
+
+
 
 ```
 
